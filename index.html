@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casinoworld</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .slot-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .slot-game {
+      width: 300px;
+      height: 350px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background: #222;
+      color: #fff;
+      border-radius: 10px;
+    }
+    .slot-game iframe {
+      width: 100%;
+      height: 250px;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Casinoworld</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#games">Games</a></li>
+        <li><a href="#login">Login</a></li>
+      </ul>
+    </nav>
+  </header>
+  <section id="welcome">
+    <h2>Welcome to Casinoworld!</h2>
+    <p>Play daily and get 10 free coins every day!</p>
+  </section>
+
+  <section id="games">
+    <h2>Slot Games</h2>
+    <div class="slot-grid">
+      <!-- Sample 3 games, expand to 50 later -->
+      <div class="slot-game">
+        <h3>Lucky Spin</h3>
+        <iframe src="games/slot1/index.html"></iframe>
+      </div>
+      <div class="slot-game">
+        <h3>Fruit Blast</h3>
+        <iframe src="games/slot2/index.html"></iframe>
+      </div>
+      <div class="slot-game">
+        <h3>Treasure Wheel</h3>
+        <iframe src="games/slot3/index.html"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <section id="login">
+    <h2>Login to play</h2>
+    <button onclick="loginWithGoogle()">Login with Google</button>
+    <p id="user-info"></p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Casinoworld. All rights reserved.</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    // Firebase configuration (replace with actual keys from your Firebase project)
+    const firebaseConfig = {
+      apiKey: "REPLACE_WITH_YOUR_API_KEY",
+      authDomain: "REPLACE_WITH_YOUR_PROJECT_ID.firebaseapp.com",
+      projectId: "REPLACE_WITH_YOUR_PROJECT_ID",
+      storageBucket: "REPLACE_WITH_YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "REPLACE_WITH_SENDER_ID",
+      appId: "REPLACE_WITH_APP_ID"
+    };
+
+    // Initialize Firebase safely
+    try {
+      firebase.initializeApp(firebaseConfig);
+    } catch (e) {
+      if (!/already exists/.test(e.message)) {
+        console.error("Firebase initialization error", e.stack);
+      }
+    }
+
+    const auth = firebase.auth();
+
+    function loginWithGoogle() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then(result => {
+          document.getElementById('user-info').innerText = `Welcome, ${result.user.displayName}! You received 10 daily coins!`;
+        })
+        .catch(error => {
+          console.error("Authentication failed:", error);
+        });
+    }
+  </script>
+</body>
+</html>
